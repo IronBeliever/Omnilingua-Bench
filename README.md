@@ -106,8 +106,9 @@ If Omnilingua-Bench helps your research, please cite:
 ```bibtex
 @misc{omnilingua_bench_2026,
   title        = {Omnilingua-Bench: Multilingual Omni-modal Evaluation of Long Audio Recognition, Multi-speaker Understanding, and Instruction Following},
-  author       = {Alibaba Token Hub, Alibaba Group},
-  year         = {2026}
+  author       = {{Alibaba Token Hub, Alibaba Group}},
+  year         = {2026},
+  howpublished = {\url{https://github.com/QwenLM/Omnilingua-Bench}}
 }
 ```
 
@@ -224,8 +225,9 @@ Omnilingua-MaXIFE 直接随仓库发布（`Omnilingua-MaXIFE/`），采用**双�
 ```bibtex
 @misc{omnilingua_bench_2026,
   title        = {Omnilingua-Bench: Multilingual Omni-modal Evaluation of Long Audio Recognition, Multi-speaker Understanding, and Instruction Following},
-  author       = {Alibaba Token Hub, Alibaba Group},
-  year         = {2026}
+  author       = {{Alibaba Token Hub, Alibaba Group}},
+  year         = {2026},
+  howpublished = {\url{https://github.com/QwenLM/Omnilingua-Bench}}
 }
 ```
 
