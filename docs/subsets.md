@@ -100,9 +100,9 @@
 
 **支持语种**：7 种中高资源语言，`fr, id, ja, ko, it, pt, tr`，即法语、印尼语、日语、韩语、意大利语、葡萄牙语、土耳其语；对应源清单中的 **5,387 条记录**。
 
-**已发布数据集**：`Omnilingua-MaXIFE/Omnilingua-MaXIFE_v202609_public.jsonl`（`split=test`、`subset_version=v202609`、**5,387 条**）。7 语种共 5,387 条（fr 755、id 773、it 766、ja 769、ko 781、pt 753、tr 790），样本 id 为 `maxife-<lang>-<n>`，`input.media[].path` 是相对子集根目录的真实路径（如 `fr/audio/fr_fr_5_c21f96.wav`），随仓库以 git LFS 附带 24 kHz mono WAV；`audio` 轨道 5,166 条、`audio_text` 轨道 221 条（后者在音频之外附文本上下文）。语音由商用云端 TTS 模型从文本 MaXIFE 单语子集合成、我方自有；该子集采用**双许可**：文本内容（指令、可朗读文本、约束）沿用上游 MaXIFE 的 **MIT** 许可证，合成语音（WAV）采用 **CC BY-NC 4.0** 许可证（两份许可证文本见该目录下 `LICENSE`），与本基准以 `source_url` 引用的第三方原始媒体性质不同。该子集是四者中唯一随仓库附带媒体的。清单由逐语种 parquet 经 `tools/build_maxife_manifest.py` 转换而来（parquet 已删除，SHA-256 见 `released_manifest.built_from`），逐文件校验值见 [subsets.json](../metadata/subsets.json) 的 `released_manifest`。
+**已发布数据集**：`Omnilingua-MaXIFE/Omnilingua-MaXIFE_v202609_public.jsonl`（`split=test`、`subset_version=v202609`、**5,387 条**）。7 语种共 5,387 条（fr 755、id 773、it 766、ja 769、ko 781、pt 753、tr 790），样本 id 为 `maxife-<lang>-<n>`，`input.media[].path` 是相对子集根目录的真实路径（如 `fr/audio/fr_fr_5_c21f96.wav`），随仓库以 git LFS 附带 24 kHz mono WAV；`audio` 轨道 5,166 条、`audio_text` 轨道 221 条（后者在音频之外附文本上下文）。语音由商用云端 TTS 模型从文本 MaXIFE 单语子集合成、我方自有；该子集采用**双许可**：文本内容（指令、可朗读文本、约束）沿用上游 MaXIFE 的 **MIT** 许可证，合成语音（WAV）采用 **CC BY-NC 4.0** 许可证（两份许可证文本见该目录下 `LICENSE`），与本基准以 `source_url` 引用的第三方原始媒体性质不同。该子集随仓库附带媒体（Omnilingua-AudioMC 同样随仓库附带音频，见下节）。清单由逐语种 parquet 经 `tools/build_maxife_manifest.py` 转换而来（parquet 已删除，SHA-256 见 `released_manifest.built_from`），逐文件校验值见 [subsets.json](../metadata/subsets.json) 的 `released_manifest`。
 
-**原始全量源统计（非当前支持范围）**：9 种语言、6,886 条记录，下表中的英语 `en`（725 条）和中文 `zh`（774 条）未纳入当前支持范围。原始全量源清单中 **6,559 条只有音频输入块，327 条同时包含音频和文本输入块**；当前 7 语种范围的输入组合分布待重新统计。
+**原始全量源统计（非当前支持范围）**：9 种语言、6,886 条记录，下表中的英语 `en`（725 条）和中文 `zh`（774 条）未纳入当前支持范围。原始全量源清单中 **6,559 条只有音频输入块，327 条同时包含音频和文本输入块**。
 
 | 代码 | 语言 | 源记录数 |
 | --- | --- | ---: |
@@ -117,7 +117,7 @@
 | zh | 中文 | 774 |
 | 合计 | 9 种 | 6,886 |
 
-原始全量源清单包含 **11 个约束大类、47 种细分约束**；当前 7 语种范围的约束分布待重新统计。单条样本可以包含多项约束，因此约束数与样本数不同。
+原始全量源清单包含 **11 个约束大类、47 种细分约束**。单条样本可以包含多项约束，因此约束数与样本数不同。
 
 | 约束类 | 考察内容 |
 | --- | --- |
@@ -138,6 +138,20 @@
 **指标设计**：每条样本内先平均各约束分，再对样本平均，得到 `constraint_score`；所有约束均满足的样本比例为 `all_constraints_pass_rate`。历史实现允许部分约束有 0、0.7、1 等分值，因此平均约束分不等于二元“准确率”。还应分别报告约束类别、语言和失败率；需要模型裁判的约束必须固定裁判模型、模板、采样参数和超时策略。裁判故障不是模型的零分。
 
 **数据许可证**：随仓库发布的 `Omnilingua-MaXIFE/` 采用双许可——文本内容（指令、可朗读文本、约束）沿用上游 MaXIFE 的 **MIT**，合成语音（WAV）为 **CC BY-NC 4.0**；该子集不含以 URL 引用的第三方原始媒体。
+
+## Omnilingua-AudioMC · 音频
+
+**任务**：多轮口语对话评测（`multi_turn_dialogue`）。被测模型以语音助手身份进入多轮对话：user 轮以 WAV 音频输入，assistant 历史为数据集参考转写，最后一条消息必须是 user，模型生成最终文本回复；回复按 `reference.rubric` 逐条经 LLM-as-a-Judge 评分（judge prompt 见 `Omnilingua-AudioMC/prompts/judge.md`），全部 rubric 满足才记该对话 instance 通过。
+
+**能力轴**：`INFERENCE_MEMORY`（推断记忆，82 条）、`INSTRUCTION_RETENTION`（指令保持，95 条）、`SELF_COHERENCE`（自我一致，77 条）、`VOICE_EDITING`（语音编辑，100 条），每语言合计 354 条对话 / 1,404 条 rubric / 1,827 段 user 轮音频。
+
+**支持语种与控制组**：10 种语言 `zh, en, es, fr, ru, de, it, ja, th, vi`，各 354 条严格平行对话（同 `source_conv_id` 跨语言对应，分数可直接比较）；另有 `en_tts` 合成英文控制组 354 条（英文原转写直接合成，用于度量合成本身的影响），在清单中语言仍记 `en`，以 `metadata.condition=en_tts` 区分。`en` 为上游真人录音（48 kHz），其余语言与 en_tts 为我方 TTS 合成（24 kHz）。
+
+**已发布数据集**：`Omnilingua-AudioMC/Omnilingua-AudioMC_v202610_public.jsonl`（`split=test`、`subset_version=v202610`、**3,894 条** = 11 个条件各 354 条：en 354、en_tts 控制组 354、9 个本地化语言各 354；清单内 en_tts 样本语言记 `en`，故按 `languages.source` 聚合时 en 合计 708 = 原始 en 354 + en_tts 354）。样本 id 为 `audiomc-<arm>-<source_conv_id>`，`input.media[].path` 为相对子集根目录的真实路径（如 `data/zh/audio/<conv>_turn1.wav`），随仓库附带全部 20,097 个 WAV（累计约 **140.64 小时**，单条 1.56–226.28 秒）。每语言保留旧版逐语言索引 `data/<lang>/index.jsonl` 供既有评测脚本使用。数据源自上游 ScaleAI/audiomc（MIT，452 条英文对话，过滤 Audio-Cue 及质检不合格对话后保留 354 条）；清单由各语种索引文件 `data/<lang>/index.jsonl` 汇总转换生成，逐项校验值见 [subsets.json](../metadata/subsets.json) 的 `released_manifest`。
+
+**指标设计**：`instance_pass_rate`（对话全部 rubric 满足的比例，头条指标）与 `rubric_pass_rate`（单条 rubric 满足比例，诊断用）；推理失败或未全部评分的对话记为 incomplete、不计分母，需随结果报告。裁判须为强文本模型且不得与被测模型同族。
+
+**数据许可证**：索引与文本标注为 **CC BY-NC 4.0**；任务设计、judge prompt 与英文源对话源自 ScaleAI/audiomc（MIT）；本地化对话与合成语音为我方制作。
 
 ## 统一报告原则
 

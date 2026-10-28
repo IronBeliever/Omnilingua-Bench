@@ -19,6 +19,7 @@ REFERENCE_FIELDS = {
     "long_audio_qa": "answers",
     "speaker_attributed_asr": "segments",
     "instruction_following": "constraints",
+    "multi_turn_dialogue": "rubric",
 }
 
 

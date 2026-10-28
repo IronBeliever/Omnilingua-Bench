@@ -31,7 +31,7 @@ Omnilingua-LongASR is a **multilingual, long-form speech recognition** benchmark
 Each item is one long recording; the model listens to the whole audio and must
 transcribe it into text in the **same language** (L → L, no translation).
 
-- **135 items** across **10 languages**, **~129.94 hours** total
+- **134 items** across **10 languages**, **~127.44 hours** total
 - Single-clip duration ranges **30.56 – 200.04 min** (median **~47.44 min**)
 - Audio is **not** shipped: each item references a social-media source via
   `metadata.source_url` plus a `[source_start_sec, source_end_sec]` window
@@ -52,12 +52,12 @@ Omnilingua-Bench suite (see the top-level `README.md`).
 | Spanish | es | 10 |
 | French | fr | 19 |
 | Indonesian | id | 12 |
-| Japanese | ja | 18 |
+| Japanese | ja | 17 |
 | Korean | ko | 14 |
 | Russian | ru | 10 |
 | Thai | th | 15 |
 | Chinese | zh | 17 |
-| **Total** | | **135** |
+| **Total** | | **134** |
 
 ## Data layout
 
@@ -67,7 +67,7 @@ Omnilingua-LongASR/
 └── README.md                 # this file
 ```
 
-The JSONL carries **135** unique `id`s. Raw media is **not** included: each
+The JSONL carries **134** unique `id`s. Raw media is **not** included: each
 item only references its source recording and the exact time window to cut.
 
 ### JSONL schema
@@ -93,7 +93,7 @@ from pathlib import Path
 
 root = Path("Omnilingua-LongASR")
 rows = [json.loads(l) for l in (root / "OmniLingua-LongAudioASR_v202609_public.jsonl").open()]
-assert len({r["id"] for r in rows}) == 135
+assert len({r["id"] for r in rows}) == 134
 
 row = rows[0]
 lang = row["languages"]["source"][0]                 # "ar"

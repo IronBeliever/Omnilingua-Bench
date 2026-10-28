@@ -231,6 +231,48 @@
         "max_seconds": 78.96
       },
       "license": "文本内容 MIT（上游 MaXIFE）；合成语音 CC BY-NC 4.0"
+    },
+    {
+      "name": "Omnilingua-AudioMC",
+      "supported_coverage": {
+        "language_count": 10,
+        "languages": ["zh", "en", "es", "fr", "ru", "de", "it", "ja", "th", "vi"],
+        "source_record_count": 3540,
+        "note": "10 个语言各 354 条平行对话；另有 en_tts 合成英文控制组 354 条，在清单中语言代码仍为 en，以 metadata.condition=en_tts 区分"
+      },
+      "task": "multi_turn_dialogue",
+      "output": "text",
+      "tracks": {"audio": {"status": "source_verified", "required_media": ["audio"], "allowed_media": ["audio"]}},
+      "source_coverage": {
+        "kind": "parallel_multilingual_spoken_dialogue",
+        "language_count": 11,
+        "language_counts": {"en": 354, "en_tts": 354, "zh": 354, "ja": 354, "es": 354, "fr": 354, "ru": 354, "de": 354, "it": 354, "th": 354, "vi": 354},
+        "sample_count": 3894,
+        "axis_counts": {"INFERENCE_MEMORY": 82, "INSTRUCTION_RETENTION": 95, "SELF_COHERENCE": 77, "VOICE_EDITING": 100},
+        "rubric_items_per_language": 1404,
+        "audio_clips_per_language": 1827,
+        "upstream": "ScaleAI/audiomc（MIT，452 条英文真人录音，过滤 Audio-Cue 及质检不合格对话后保留 354 条）"
+      },
+      "source_file": "data/<lang>/index.jsonl",
+      "metrics": ["instance_pass_rate", "rubric_pass_rate"],
+      "released_manifest": {
+        "path": "Omnilingua-AudioMC/Omnilingua-AudioMC_v202610_public.jsonl",
+        "subset_version": "v202610",
+        "split": "test",
+        "sample_count": 3894,
+        "sha256": "fe69b089bda63d31cb696946154f33823ae53fbcd3e1ed244b1640e2817ddddf",
+        "media_included": true,
+        "media_reference": "path_relative_to_subset_root",
+        "audio": "en 为 48 kHz、其余 24 kHz 单声道 WAV；en 为上游真人录音，其余语言与 en_tts 为我方 TTS 合成；随仓库发布",
+        "language_counts": {"en": 354, "en_tts": 354, "zh": 354, "ja": 354, "es": 354, "fr": 354, "ru": 354, "de": 354, "it": 354, "th": 354, "vi": 354},
+        "language_counts_note": "按条件（arm）分列；清单内 en_tts 样本的 languages.source=en，故按该字段聚合时 en 合计 708 = 原始 en 354 + en_tts 354",
+        "duration_basis": "3894 条清单的 WAV 头解析时长；未经音频解码复核",
+        "total_hours": 140.64223,
+        "min_seconds": 1.56,
+        "max_seconds": 226.28,
+        "built_from": {"note": "由各语种索引文件 data/<lang>/index.jsonl 汇总转换生成"}
+      },
+      "license": "索引与文本标注 CC BY-NC 4.0；任务设计、judge prompt 与英文源对话源自 ScaleAI/audiomc（MIT）；本地化对话与合成语音为我方制作"
     }
   ]
 }

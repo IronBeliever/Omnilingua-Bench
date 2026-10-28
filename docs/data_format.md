@@ -13,6 +13,7 @@
 | Omnilingua-MSpeaker | speaker_attributed_asr | audio | `reference.segments` |
 | Omnilingua-MSpeaker | speaker_attributed_asr | audiovisual | `reference.segments`；与 audio 轨道共用同一批源视频（source_url 即含画面的原始视频），覆盖同为 6 语种、297 条 |
 | Omnilingua-MaXIFE | instruction_following | audio / audio_text | `reference.constraints` |
+| Omnilingua-AudioMC | multi_turn_dialogue | audio | `reference.rubric` |
 
 `track` 描述任务输入：音频任务可以附带固定文本指令；`audio_text` 表示文本问题或文本上下文也是任务内容。视频版本显式包含音频和视频流，不能仅靠 `.mp4` 扩展名推断使用了声音。
 
@@ -36,7 +37,7 @@
 
 语言使用 BCP-47 风格代码，例如 `zh`、`en`、`pt-BR`；未知时用 `und`，不能把 `multilingual` 当语言代码。当前校验器仅检查语言代码语法，不认证实际音频语言。ASR 的 source 与 target 应一致；QA、指令遵循不得默认等同于翻译。
 
-当前支持语种以 [子集目录](../metadata/subsets.json) 的 `supported_coverage` 为准：Omnilingua-LongASR 和 Omnilingua-LongQA 均为 `zh, en, es, fr, ja, ko, id, ru, ar, th`；Omnilingua-MSpeaker 音频轨道为 `es, fr, ja, ko, ru, th`；Omnilingua-MaXIFE 为 `fr, id, ja, ko, it, pt, tr`。`source_coverage` 仅保留原始清单统计，不代表全部纳入支持范围。格式校验与发布范围审核分开；合成示例可以使用支持范围以外的语言。
+当前支持语种以 [子集目录](../metadata/subsets.json) 的 `supported_coverage` 为准：Omnilingua-LongASR 和 Omnilingua-LongQA 均为 `zh, en, es, fr, ja, ko, id, ru, ar, th`；Omnilingua-MSpeaker 音频轨道为 `es, fr, ja, ko, ru, th`；Omnilingua-MaXIFE 为 `fr, id, ja, ko, it, pt, tr`；Omnilingua-AudioMC 为 `zh, en, es, fr, ru, de, it, ja, th, vi`（另有合成英文控制组 en_tts 354 条，语言代码仍记 `en`，以 `metadata.condition` 区分）。`source_coverage` 仅保留原始清单统计，不代表全部纳入支持范围。格式校验与发布范围审核分开；合成示例可以使用支持范围以外的语言。
 
 ## 输入与媒体
 
@@ -109,6 +110,19 @@
 ```
 
 约束 ID 和参数保持与具体评分实现一致。`instruction_transcript` 可保留语音指令转写供裁判使用，但不能加入模型输入；已有文本上下文按原数据保留，不能将任务改造成纯文本指令遵循。当前格式工具不执行约束判定。
+
+### Omnilingua-AudioMC
+
+```json
+{
+  "reference": {
+    "rubric": ["回复需提及用户在第一轮给出的约束条件。"]
+  },
+  "metadata": {"synthetic": true, "license": "CC BY-NC 4.0", "axis": "INSTRUCTION_RETENTION"}
+}
+```
+
+多轮语音对话：user 轮以音频（`input.media`）输入，assistant 历史为数据集参考转写，最后一条消息必须是 user，被测模型生成最终回复；对话按 `reference.rubric` 逐条 LLM-as-a-Judge 评分，全部满足才记 instance 通过。`metadata.axis` 取 `INFERENCE_MEMORY` / `INSTRUCTION_RETENTION` / `SELF_COHERENCE` / `VOICE_EDITING`；`metadata.register`（casual/polite）与 `metadata.condition`（en_tts 控制组）为可选补充标注。
 
 ## 预测与结果格式建议
 

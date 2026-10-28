@@ -7,10 +7,10 @@
   "properties": {
     "schema_version": {"const": "0.1.0"},
     "id": {"$ref": "#/$defs/nonempty"},
-    "subset": {"enum": ["Omnilingua-LongASR", "Omnilingua-LongQA", "Omnilingua-MSpeaker", "Omnilingua-MaXIFE"]},
+    "subset": {"enum": ["Omnilingua-LongASR", "Omnilingua-LongQA", "Omnilingua-MSpeaker", "Omnilingua-MaXIFE", "Omnilingua-AudioMC"]},
     "subset_version": {"$ref": "#/$defs/nonempty"},
     "split": {"enum": ["example", "dev", "test"]},
-    "task": {"enum": ["long_audio_asr", "long_audio_qa", "speaker_attributed_asr", "instruction_following"]},
+    "task": {"enum": ["long_audio_asr", "long_audio_qa", "speaker_attributed_asr", "instruction_following", "multi_turn_dialogue"]},
     "track": {"enum": ["audio", "audio_text", "audiovisual"]},
     "languages": {
       "type": "object", "additionalProperties": false,

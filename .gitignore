@@ -18,3 +18,7 @@ outputs/
 
 # Released as Git LFS objects, so the *.wav rule above must not hide them.
 !Omnilingua-MaXIFE/**/*.wav
+
+!Omnilingua-AudioMC/data/
+!Omnilingua-AudioMC/data/**
+!Omnilingua-AudioMC/**/*.wav
