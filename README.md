@@ -215,7 +215,7 @@ Omnilingua-AudioMC 同样随仓库发布（`Omnilingua-AudioMC/`）：索引与�
 
 ## 引用
 
-如果 Omnilingua-Bench 对你的研究有帮助，请引用：
+如果 Omnilingua-Bench 及其子集对你的研究有帮助，请引用：
 
 ```bibtex
 @misc{omnilingua_bench_2026,
@@ -223,6 +223,14 @@ Omnilingua-AudioMC 同样随仓库发布（`Omnilingua-AudioMC/`）：索引与�
   author       = {{Alibaba Token Hub, Alibaba Group}},
   year         = {2026},
   howpublished = {\url{https://github.com/QwenLM/Omnilingua-Bench}}
+}
+```
+```bibtex
+@article{ge2026omnilingual,
+  title={Omnilingual-MsASR: Benchmarking Multimodal, Multilingual, Long-Form Multi-Speaker ASR of Omni Large Language Models},
+  author={Ge, Yuan and Zhang, Pei and Cheng, Xize and Mu, Lingzhou and Wang, Mingyang and Xu, Jin and Yang, Baosong and Gao, Shengxiang and Zhu, Jingbo and Yu, Zhengtao and others},
+  journal={arXiv preprint arXiv:2610.29455},
+  year={2026}
 }
 ```
 
